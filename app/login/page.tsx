@@ -22,6 +22,7 @@ export default function Login() {
       });
       const data = await res.json();
       if (!res.ok) { setError(data.detail || "Login failed."); setLoading(false); return; }
+      localStorage.setItem("access_token", data.access_token);
       router.push("/dashboard");
     } catch {
       setError("Could not connect to server.");

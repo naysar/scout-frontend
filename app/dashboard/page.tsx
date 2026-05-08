@@ -27,7 +27,7 @@ export default function Dashboard() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    fetch("https://scout-backend-production-cfb9.up.railway.app/auth/me", { credentials: "include" })
+    fetch("https://scout-backend-production-cfb9.up.railway.app/auth/me", { headers: { "Authorization": "Bearer " + localStorage.getItem("access_token") } })
       .then(res => { if (!res.ok) { router.push("/login"); return null; } return res.json(); })
       .then(data => { if (data) setUser(data); })
       .catch(() => router.push("/login"));
