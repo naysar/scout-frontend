@@ -27,7 +27,7 @@ export default function Dashboard() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    fetch("http://localhost:8000/auth/me", { credentials: "include" })
+    fetch("https://scout-backend-production-cfb9.up.railway.app/auth/me", { credentials: "include" })
       .then(res => { if (!res.ok) { router.push("/login"); return null; } return res.json(); })
       .then(data => { if (data) setUser(data); })
       .catch(() => router.push("/login"));
@@ -42,7 +42,7 @@ export default function Dashboard() {
     if (activeChatId === id) setActiveChatId(null);
   };
   const handleLogout = async () => {
-    await fetch("http://localhost:8000/auth/logout", { method: "POST", credentials: "include" });
+    await fetch("https://scout-backend-production-cfb9.up.railway.app/auth/logout", { method: "POST", credentials: "include" });
     router.push("/login");
   };
 
@@ -59,14 +59,14 @@ export default function Dashboard() {
     };
     setChats((prev) => [newChatObj, ...prev]);
     setActiveChatId(chatId);
-    const res = await fetch("http://localhost:8000/run", {
+    const res = await fetch("https://scout-backend-production-cfb9.up.railway.app/run", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ goal }),
     });
     const { task_id } = await res.json();
     setGoal("");
-    const eventSource = new EventSource(`http://localhost:8000/stream/${task_id}`);
+    const eventSource = new EventSource(`https://scout-backend-production-cfb9.up.railway.app/stream/${task_id}`);
     eventSource.onmessage = (e) => {
       const data = e.data;
       if (data === "[DONE]" || data === "[FAILED]") { eventSource.close(); setLoading(false); }
